@@ -1,12 +1,20 @@
 package guru.qa.tests;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.selector.ByText;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import java.io.File;
+
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.*;
+import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.files.DownloadActions.click;
+import static java.awt.SystemColor.control;
 import static org.openqa.selenium.remote.tracing.EventAttribute.setValue;
 
 public class TestPracticeForm {
@@ -16,24 +24,52 @@ public class TestPracticeForm {
         Configuration.holdBrowserOpen = true;
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.browserSize = "1900x1080";
-    }
+                     }
 
     @Test
     void fillFormTest() {
         open("/automation-practice-form");
-        $("#firstName").setValue("Barak");
+        executeJavaScript("$('footer').remove()");
+        executeJavaScript("$('#fixedban').remove()");
+         $("#firstName").setValue("Barak");
         $("#lastName").setValue("Obama");
         $("#userEmail").setValue("barakobama.com");
-        $("[class=custom-control-label]").click();
+        $(byText("Male")).click();
+  /*      Второй вариант
+        $(By.xpath("//div[@id='genterWrapper']/div[2]/div")).click();
+        $(By.xpath("//div[@id='genterWrapper']/div[2]")).click();
+        $(By.xpath("//label[contains('Male')]")).click();*/
         $("#userNumber").setValue("8931311123");
-        $("#dateOfBirthInput").setValue("01.01.1970");
-        $(".react-datepicker__day--selected").click();
-        $("[id=subjectsContainer]").setValue("Politics");
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").selectOption("June");
+        $(".react-datepicker__year-select").selectOption("1955");
+        $(".react-datepicker__day--013").click();
+        $("#subjectsInput").val("Math").pressEnter();
+        $(byText("Reading")).click();
+        $("#uploadPicture").uploadFile(new File(
+                "C:\\Users\\Natalya.Kadysheva\\IdeaProjects\\QA Guru\\demoqa-homework" +
+                        "\\src\\test\\resources\\1.jpg"));
+        $("#currentAddress").setValue("190000, Russia, Saint-Petersburg, Perfect Street, 1");
+        zoom(0.8);
+        $("#state").scrollIntoView(true).click();
+        $(byTagAndText("div", "NCR")).click();
+        $("#city").click();
+        $(byTagAndText("div","Delhi")).click();
 
-        $("[class=custom-control-label]").click();
-        //       $("#userNumber").setValue();
-        //       $("#userNumber").setValue();
         //Asserts
-    }
+        $("#firstName").shouldHave(value("Barak"));
+        $("#lastName").shouldHave(value("Obama"));
+        $("#userEmail").shouldHave(value("barakobama.com"));
+        $("#gender-radio-1").shouldBe(selected);
+        $("#userNumber").shouldHave(value("8931311123"));
+        $("#dateOfBirthInput").shouldHave(value("13 Jun 1955"));
+        $("#hobbies-checkbox-2").shouldBe(selected);
+        $("#uploadPicture").shouldBe(visible);
+        $("#currentAddress").shouldHave(value("190000, Russia, Saint-Petersburg, Perfect Street, 1"));
+        $("#state") .shouldHave(text("NCR"));
+        $("#city") .shouldHave(text("Delhi"));
 
+
+
+    }
 }
