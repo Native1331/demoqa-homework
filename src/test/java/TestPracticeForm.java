@@ -1,4 +1,3 @@
-package guru.qa.tests;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
@@ -33,19 +32,15 @@ public class TestPracticeForm {
         executeJavaScript("$('#fixedban').remove()");
          $("#firstName").setValue("Barak");
         $("#lastName").setValue("Obama");
-        $("#userEmail").setValue("barakobama.com");
-        $(byText("Male")).click();
-  /*      Второй вариант
-        $(By.xpath("//div[@id='genterWrapper']/div[2]/div")).click();
-        $(By.xpath("//div[@id='genterWrapper']/div[2]")).click();
-        $(By.xpath("//label[contains('Male')]")).click();*/
+        $("#userEmail").setValue("Barak@Obama.com");
+        $("#genterWrapper").$(byText("Male")).click();
         $("#userNumber").setValue("8931311123");
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption("June");
         $(".react-datepicker__year-select").selectOption("1955");
         $(".react-datepicker__day--013").click();
         $("#subjectsInput").val("Math").pressEnter();
-        $(byText("Reading")).click();
+        $("#hobbiesWrapper").$(byText("Reading")).click();
         $("#uploadPicture").uploadFile(new File(
                 "C:\\Users\\Natalya.Kadysheva\\IdeaProjects\\QA Guru\\demoqa-homework" +
                         "\\src\\test\\resources\\1.jpg"));
@@ -55,21 +50,19 @@ public class TestPracticeForm {
         $(byTagAndText("div", "NCR")).click();
         $("#city").click();
         $(byTagAndText("div","Delhi")).click();
+        $("#submit").click();
 
         //Asserts
-        $("#firstName").shouldHave(value("Barak"));
-        $("#lastName").shouldHave(value("Obama"));
-        $("#userEmail").shouldHave(value("barakobama.com"));
-        $("#gender-radio-1").shouldBe(selected);
-        $("#userNumber").shouldHave(value("8931311123"));
-        $("#dateOfBirthInput").shouldHave(value("13 Jun 1955"));
-        $("#hobbies-checkbox-2").shouldBe(selected);
-        $("#uploadPicture").shouldBe(visible);
-        $("#currentAddress").shouldHave(value("190000, Russia, Saint-Petersburg, Perfect Street, 1"));
-        $("#state") .shouldHave(text("NCR"));
-        $("#city") .shouldHave(text("Delhi"));
-
-
-
+        $(".table-responsive").shouldHave(
+                text("Barak" +" "+ "Obama"),
+                text ("Barak@Obama.com"),
+                text("8931311123"),
+                text ("Male"),
+                text ("8931311123"),
+                text ("13 June,1955"),
+                text ("Reading"),
+                text ("1.jpg"),
+                text ("190000, Russia, Saint-Petersburg, Perfect Street, 1"),
+                text ("NCR" +" "+ "Delhi"));
     }
 }
