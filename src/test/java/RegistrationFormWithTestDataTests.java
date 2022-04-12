@@ -2,14 +2,20 @@ import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byTagAndText;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
+import static java.lang.String.format;
 
-public class RegistrationFormTests {
+public class RegistrationFormWithTestDataTests {
+
+    String firstname="Alex",
+            lastname ="Egorov",
+             email = "alex@erorov.com";
+
+    String expectedFullname = format("%s %s",firstname,lastname);
+
 
         @BeforeAll
         static void setUp() {
@@ -19,15 +25,14 @@ public class RegistrationFormTests {
 
         @Test
         void fillFormTest() {
-            String name=("Alex Egorov");
             open("/automation-practice-form");
             executeJavaScript("$('footer').remove()");
             executeJavaScript("$('#fixedban').remove()");
 
             $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
-            $("#firstName").setValue("Barak");
-            $("#lastName").setValue("Obama");
-            $("#userEmail").setValue("Barak@Obama.com");
+            $("#firstName").setValue(firstname);
+            $("#lastName").setValue(lastname);
+            $("#userEmail").setValue(email);
             $("#genterWrapper").$(byText("Male")).click();
             $("#userNumber").setValue("8931311123");
             $("#dateOfBirthInput").click();
@@ -47,8 +52,8 @@ public class RegistrationFormTests {
 
             //Asserts
             $(".table-responsive").shouldHave(
-                    text("Barak" +" "+ "Obama"),
-                    text ("Barak@Obama.com"),
+                    text(expectedFullname),
+                    text (email),
                     text("8931311123"),
                     text ("Male"),
                     text ("8931311123"),
