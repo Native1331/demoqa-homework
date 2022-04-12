@@ -41,9 +41,7 @@ public class TestPracticeForm {
         $(".react-datepicker__day--013").click();
         $("#subjectsInput").val("Math").pressEnter();
         $("#hobbiesWrapper").$(byText("Reading")).click();
-        $("#uploadPicture").uploadFile(new File(
-                "C:\\Users\\Natalya.Kadysheva\\IdeaProjects\\QA Guru\\demoqa-homework" +
-                        "\\src\\test\\resources\\1.jpg"));
+        $("#uploadPicture").uploadFromClasspath("1.jpg");
         $("#currentAddress").setValue("190000, Russia, Saint-Petersburg, Perfect Street, 1");
         zoom(0.8);
         $("#state").scrollIntoView(true).click();
