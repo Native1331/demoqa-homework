@@ -14,6 +14,7 @@ public class RegistrationFormTests {
 
         @BeforeAll
         static void setUp() {
+            Configuration.holdBrowserOpen = true;
             Configuration.baseUrl = "https://demoqa.com";
             Configuration.browserSize = "1900x1080";
         }
