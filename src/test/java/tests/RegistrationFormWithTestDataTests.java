@@ -1,38 +1,41 @@
+package tests;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.selector.ByText;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 
-import java.io.File;
-
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selectors.*;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.byTagAndText;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.files.DownloadActions.click;
-import static java.awt.SystemColor.control;
-import static org.openqa.selenium.remote.tracing.EventAttribute.setValue;
+import static com.codeborne.selenide.Selenide.$;
+import static java.lang.String.format;
 
-public class TestPracticeForm {
+ public  class RegistrationFormWithTestDataTests{
+
+    String firstname="Alex",
+            lastname ="Egorov",
+            email = "alex@erorov.com";
+
+    String expectedFullname = format("%s %s",firstname,lastname);
+
 
     @BeforeAll
     static void setUp() {
-        Configuration.holdBrowserOpen = true;
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.browserSize = "1900x1080";
-                     }
+    }
 
     @Test
     void fillFormTest() {
         open("/automation-practice-form");
         executeJavaScript("$('footer').remove()");
         executeJavaScript("$('#fixedban').remove()");
-         $("#firstName").setValue("Barak");
-        $("#lastName").setValue("Obama");
-        $("#userEmail").setValue("Barak@Obama.com");
+
+        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
+        $("#firstName").setValue(firstname);
+        $("#lastName").setValue(lastname);
+        $("#userEmail").setValue(email);
         $("#genterWrapper").$(byText("Male")).click();
         $("#userNumber").setValue("8931311123");
         $("#dateOfBirthInput").click();
@@ -44,16 +47,17 @@ public class TestPracticeForm {
         $("#uploadPicture").uploadFromClasspath("1.jpg");
         $("#currentAddress").setValue("190000, Russia, Saint-Petersburg, Perfect Street, 1");
         zoom(0.8);
-        $("#state").scrollIntoView(true).click();
-        $(byTagAndText("div", "NCR")).click();
-        $("#city").click();
-        $(byTagAndText("div","Delhi")).click();
-        $("#submit").click();
+        $("#state").click();
+        $("#stateCity-wrapper").$(byText("NCR")).click();
+                $("#city").click();
+        $("#stateCity-wrapper").$(byText("Delhi")).click();
+
+                $("#submit").click();
 
         //Asserts
         $(".table-responsive").shouldHave(
-                text("Barak" +" "+ "Obama"),
-                text ("Barak@Obama.com"),
+                text(expectedFullname),
+                text (email),
                 text("8931311123"),
                 text ("Male"),
                 text ("8931311123"),
@@ -64,3 +68,4 @@ public class TestPracticeForm {
                 text ("NCR" +" "+ "Delhi"));
     }
 }
+
