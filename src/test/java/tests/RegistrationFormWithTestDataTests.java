@@ -1,3 +1,5 @@
+package tests;
+
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,7 +11,7 @@ import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$;
 import static java.lang.String.format;
 
-public static class RegistrationFormWithTestDataTests {
+ public  class RegistrationFormWithTestDataTests{
 
     String firstname="Alex",
             lastname ="Egorov",
@@ -45,11 +47,12 @@ public static class RegistrationFormWithTestDataTests {
         $("#uploadPicture").uploadFromClasspath("1.jpg");
         $("#currentAddress").setValue("190000, Russia, Saint-Petersburg, Perfect Street, 1");
         zoom(0.8);
-        $("#state").scrollIntoView(true).click();
-        $(byTagAndText("div", "NCR")).click();
-        $("#city").click();
-        $(byTagAndText("div","Delhi")).click();
-        $("#submit").click();
+        $("#state").click();
+        $("#stateCity-wrapper").$(byText("NCR")).click();
+                $("#city").click();
+        $("#stateCity-wrapper").$(byText("Delhi")).click();
+
+                $("#submit").click();
 
         //Asserts
         $(".table-responsive").shouldHave(
@@ -65,4 +68,4 @@ public static class RegistrationFormWithTestDataTests {
                 text ("NCR" +" "+ "Delhi"));
     }
 }
-}
+
